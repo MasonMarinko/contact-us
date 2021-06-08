@@ -40,3 +40,9 @@ code {
   justify-content: flex-end;
   padding-top: 10px;
 }
+
+.input-titles {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}

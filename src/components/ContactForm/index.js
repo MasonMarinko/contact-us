@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ContactService from "../../Services/contactService";
 
 function ContactForm() {
   const [form, setForm] = useState({
@@ -11,12 +12,11 @@ function ContactForm() {
   const [submitButton, setActiveButton] = useState(true)
 
   const onFieldChange = (name, e) => {
-    var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+    let emailVerify = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
     const checkbox = document.getElementById("emailVerify").checked
-    console.log(checkbox)
     const data = { ...form };
     data[name] = e.target.value;
-    if (!pattern.test(data.email) && data.name.length >= 1) {
+    if (!emailVerify.test(data.email) && data.name.length >= 1) {
       setActiveButton(true)
     } else {
       setActiveButton(false)
@@ -32,6 +32,15 @@ function ContactForm() {
       birthDate: form.birthDate,
       emailVerify: document.getElementById("emailVerify").checked
     };
+
+    ContactService.create(contactData)
+    .then((postResponse) => {
+      console.log(postResponse);
+      alert("New Account Created!")
+    })
+    .catch((err) => {
+      alert(err.response.data.message)
+    });
   };
 
   const onClear = (e) => {
@@ -51,6 +60,7 @@ function ContactForm() {
     <div className="actions-div">
       <form className="form-format">
         <h1 className="contact-text">Contact Us</h1>
+        <span className="input-titles">Your Name:</span>
         <input
           onChange={(e) => onFieldChange("name", e)}
           className="info-input"
@@ -58,6 +68,7 @@ function ContactForm() {
           value={form.name}
         ></input>
         <br></br>
+        <span className="input-titles">Email:</span>
         <input
           onChange={(e) => onFieldChange("email", e)}
           className="info-input"
@@ -65,10 +76,11 @@ function ContactForm() {
           value={form.email}
         ></input>
         <br></br>
+        <span className="input-titles">Birth Date (Optional):</span>
         <input
           onChange={(e) => onFieldChange("birthDate", e)}
           className="info-input"
-          placeholder="Birth Date"
+          placeholder="Example: 01/01/2001"
           value={form.birthDate}
         ></input>
         <br></br>
@@ -78,7 +90,7 @@ function ContactForm() {
           id="emailVerify"
           name="emailVerify"
         ></input>
-        <label for="emailVerify"> I agree to be contacted via email</label>
+        <label className="email-verify" for="emailVerify"> I agree to be contacted via email</label>
         <div className="button-container">
           <button
             onClick={(e) => onClear(e)}
