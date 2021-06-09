@@ -27,9 +27,5 @@ router.post('/', async function (req, res) {
       user: user.toJSON()
   })
 })
-// define the about route
-router.get('/test', function (req, res) {
-  res.send('About Users')
-})
 
 module.exports = router

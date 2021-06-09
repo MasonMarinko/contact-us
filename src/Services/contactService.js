@@ -1,8 +1,8 @@
-const apiService = require('./apiService');
+const axios = require('axios');
 
 const ContactService = {
     create:(data) => {
-       return apiService.post("/users", data)
+       return axios.post("http://localhost:4500/api/users", data)
        .then(result => result.data)
     }   
 }
