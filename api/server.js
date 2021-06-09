@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 
 app.use(cors())
 
-app.use("/api/user", UserController);
+app.use("/api/users", UserController);
 
 
 // all accepts any HTTP method

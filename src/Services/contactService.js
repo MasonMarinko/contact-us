@@ -2,7 +2,7 @@ const apiService = require('./apiService');
 
 const ContactService = {
     create:(data) => {
-       return apiService.post("/user", data)
+       return apiService.post("/users", data)
        .then(result => result.data)
     }   
 }
