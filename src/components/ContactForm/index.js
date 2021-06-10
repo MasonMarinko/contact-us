@@ -51,21 +51,19 @@ function ContactForm() {
     setForm(data);
   };
 
-  const onSubmit = (e) => {
+  async function onSubmit(e) {
+    debugger
     const contactData = {
       name: form.name,
       email: form.email,
       birthDate: form.birthDate,
       emailVerify: document.getElementById("emailVerify").checked,
     };
-
-    ContactService.create(contactData)
+    await ContactService.create(contactData)
       .then((postResponse) => {
         e.preventDefault()
+        alert("Thank you for submitting your information. We will contact you within 24-48 hours via email");
         console.log(postResponse);
-        alert(
-          "Thank you for submitting your information. We will contact you within 24-48 hours via email"
-        );
         onClear()
       })
       .catch((err) => {
